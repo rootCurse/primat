@@ -199,11 +199,7 @@ def visualize_fw():
     ycoord = np.linspace(-10.0, 10.0, 50)
     w1, w2 = np.meshgrid(xcoord, ycoord)
     pts = np.vstack((w1.flatten(), w2.flatten()))
-
-    # All 2D points on the grid
     pts = pts.transpose()
-
-    # Function value at each point
     f_vals = np.sum(pts * pts, axis=1)
     function_plot(pts, f_vals)
     plt.title('Objective Function Shown in Color')
@@ -211,7 +207,7 @@ def visualize_fw():
     return pts, f_vals
 
 
-# Helper function to annotate a single point
+
 def annotate_pt(text, xy, xytext, color):
     plt.plot(xy[0], xy[1], marker='P', markersize=10, c=color)
     plt.annotate(text, xy=xy, xytext=xytext,
@@ -221,14 +217,12 @@ def annotate_pt(text, xy, xytext, color):
                                  connectionstyle='arc3'))
 
 
-# Plot the function
-# Pts are 2D points and f_val is the corresponding function value
+
 def function_plot(pts, f_val):
     f_plot = plt.scatter(pts[:, 0], pts[:, 1],
                          c=f_val, vmin=min(f_val), vmax=max(f_val),
                          cmap='RdBu_r')
     plt.colorbar(f_plot)
-    # Show the optimal point
     annotate_pt('global minimum', (0, 0), (-5, -7), 'yellow')
 
 
@@ -236,19 +230,13 @@ pts, f_vals = visualize_fw()
 
 
 def visualize_learning(w_history):
-    # Make the function plot
     function_plot(pts, f_vals)
-
-    # Plot the history
     plt.plot(w_history[:, 0], w_history[:, 1], marker='o', c='magenta')
-
-    # Annotate the point found at last iteration
     annotate_pt('minimum found',
                 (w_history[-1, 0], w_history[-1, 1]),
                 (-1, 7), 'green')
     iter = w_history.shape[0]
     for w, i in zip(w_history, range(iter - 1)):
-        # Annotate with arrows to show history
         plt.annotate("",
                      xy=w, xycoords='data',
                      xytext=w_history[i + 1, :], textcoords='data',
@@ -257,7 +245,6 @@ def visualize_learning(w_history):
 
 
 def solve_fw():
-    # Setting up
     rand = np.random.RandomState(19)
     w_init = rand.uniform(-10, 10, 2)
     fig, ax = plt.subplots(nrows=4, ncols=4, figsize=(18, 12))
@@ -265,7 +252,6 @@ def solve_fw():
     momentum = [0, 0.5, 0.9]
     ind = 1
 
-    # Iteration through all possible parameter combinations
     for alpha in momentum:
         for eta, col in zip(learning_rates, [0, 1, 2, 3]):
             plt.subplot(3, 4, ind)
